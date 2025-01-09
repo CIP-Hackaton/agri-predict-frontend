@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowLeft, Share2 } from 'lucide-react';
 import ShareModal from '../components/ShareModal';
 
 type ViewMode = 'farmer' | 'scientist';
 
 export default function PredictionDetailPage() {
-  const { id } = useParams();
   const [viewMode, setViewMode] = useState<ViewMode>('farmer');
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const [selectedVariety, setSelectedVariety] = useState('');

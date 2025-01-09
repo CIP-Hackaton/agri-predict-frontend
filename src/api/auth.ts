@@ -4,8 +4,7 @@ import Cookies from 'js-cookie';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 export const setAuthToken = (token: string) => {
-  Cookies.set('access_token', token);
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  Cookies.set('access_token', token, { secure: true, sameSite: 'Strict' });
 };
 
 export const getAuthToken = () => {
