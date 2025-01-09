@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, X } from 'lucide-react';
+import { useState } from 'react';
+import { Search } from 'lucide-react';
 import Pagination from '../components/Pagination';
 import PotatoDetailModal from '../components/PotatoDetailModal';
 

@@ -1,26 +1,19 @@
-import React from 'react';
-import Cookies from 'js-cookie';
 import { Navigate, useLocation } from 'react-router-dom';
-import { getAuthToken } from '../api/auth';
-import { validateUserToken } from '../api/user';
-
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
+  isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, isAuthenticated, isLoading }: ProtectedRouteProps) {
   const location = useLocation();
-  const token = getAuthToken();
 
-  if (!token) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
-  const isValid = validateUserToken();
-
-  if (!isValid) {
-    Cookies.remove('access_token');
+  if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

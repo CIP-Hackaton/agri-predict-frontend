@@ -13,6 +13,7 @@ import ProtectedRoute from '../components/ProtectedRoute';
 import { removeAuthToken } from '../api/auth';
 import { fetchUserData } from '../api/user';
 import { UserData } from '../types/user';
+import { getAuthToken, validateUserToken } from '../api/user';
 
 
 export default function Dashboard() {
@@ -20,7 +21,31 @@ export default function Dashboard() {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [showTourGuide, setShowTourGuide] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+
+  const validateAuth = async () => {
+    try {
+      const token = getAuthToken();
+      if (!token) {
+        setIsAuthenticated(false);
+        return;
+      }
+
+      const isValid = await validateUserToken();
+      if (!isValid) {
+        removeAuthToken();
+        setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const fetchData = async () => {
     const userData = await fetchUserData();
@@ -32,8 +57,14 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchData();
+    validateAuth();
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
     removeAuthToken();
@@ -82,7 +113,7 @@ export default function Dashboard() {
               >
                 <div className="flex items-center gap-2">
                   <img
-                    src="{userData?.avatarUrl}"
+                    src={userData?.avatarUrl}
                     alt="Profile"
                     className="w-8 h-8 rounded-full object-cover"
                   />
@@ -99,7 +130,7 @@ export default function Dashboard() {
             <Route 
               path="/dashboard" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}>
                   <HomePage onStartTour={() => setShowTourGuide(true)} />
                 </ProtectedRoute>
               } 
@@ -107,7 +138,7 @@ export default function Dashboard() {
             <Route 
               path="/dashboard/predict" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}>
                   <PredictPage />
                 </ProtectedRoute>
               } 
@@ -115,7 +146,7 @@ export default function Dashboard() {
             <Route 
               path="/dashboard/predictions" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}>
                   <MyPredictionsPage />
                 </ProtectedRoute>
               } 
@@ -123,7 +154,7 @@ export default function Dashboard() {
             <Route 
               path="/dashboard/predictions/:id" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}>
                   <PredictionDetailPage />
                 </ProtectedRoute>
               } 
@@ -131,7 +162,7 @@ export default function Dashboard() {
             <Route 
               path="/dashboard/averigua" 
               element={
-                <ProtectedRoute>
+                <ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}>
                   <SearchPage />
                 </ProtectedRoute>
               } 

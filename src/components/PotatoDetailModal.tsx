@@ -1,4 +1,3 @@
-import React from 'react';
 import { X } from 'lucide-react';
 
 interface PotatoVariety {
@@ -59,44 +58,11 @@ export default function PotatoDetailModal({ variety, onClose }: PotatoDetailModa
                 alt={variety.name}
                 className="w-full h-64 object-cover rounded-lg"
               />
-              <div className="mt-4 space-y-4">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Información general</h3>
-                  <dl className="space-y-2">
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Nombre científico</dt>
-                      <dd className="text-gray-900">{variety.scientificName}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Origen</dt>
-                      <dd className="text-gray-900">{variety.origin}</dd>
-                    </div>
-                    <div>
-                      <dt className="text-sm font-medium text-gray-500">Tiempo de cultivo</dt>
-                      <dd className="text-gray-900">{variety.cultivationTime}</dd>
-                    </div>
-                  </dl>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-semibold mb-2">Características</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {variety.characteristics.map((char, index) => (
-                      <span
-                        key={index}
-                        className="bg-green-50 text-green-700 px-3 py-1 rounded-full text-sm"
-                      >
-                        {char}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold mb-2">Condiciones ideales de cultivo</h3>
+                <h3 className="text-lg font-semibold mb-2">Características</h3>
                 <dl className="grid grid-cols-2 gap-4">
                   <div>
                     <dt className="text-sm font-medium text-gray-500">Temperatura</dt>
