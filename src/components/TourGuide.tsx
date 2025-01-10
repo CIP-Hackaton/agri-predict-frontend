@@ -22,27 +22,27 @@ const tourSteps: TourStep[] = [
     title: 'Crear Predicciones',
     content: 'Inicia nuevas predicciones para tus cultivos desde aquí.',
     position: 'right',
-    route: '/predict',
+    route: '/dashboard/predict',
   },
   {
     target: '[data-tour="my-predictions"]',
     title: 'Mis Predicciones',
     content: 'Revisa el historial de tus predicciones anteriores.',
     position: 'right',
-    route: '/my-predictions',
+    route: '/dashboard/predictions',
   },
   {
     target: '[data-tour="search"]',
     title: 'Averigua',
-    content: 'Explora información sobre diferentes variedades de papa.',
+    content: 'Explora información sobre nuestras las variedades de papas que usamos.',
     position: 'right',
-    route: '/search',
+    route: '/dashboard/averigua',
   },
   {
     target: '[data-tour="profile"]',
     title: 'Tu Perfil',
     content: 'Gestiona tu perfil y configuración desde aquí.',
-    position: 'left',
+    position: 'bottom',
   },
 ];
 

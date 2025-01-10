@@ -1,10 +1,19 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
 
+export const getAuthToken = () => {
+  return Cookies.get('access_token');
+};
+
 export const createPrediction = async (predictionData: any) => {
   try {
-    const response = await axios.post(`${API_URL}/predict`, predictionData);
+    const response = await axios.post(`${API_URL}/predict`, predictionData, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`,
+      },
+    });
     return response.data;
   } catch (error) {
     throw error;

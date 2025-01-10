@@ -54,7 +54,7 @@ export default function PredictionDetailPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
-          <Link to="/my-predictions" className="text-gray-600 hover:text-gray-800">
+          <Link to="/dashboard/predictions" className="text-gray-600 hover:text-gray-800">
             <ArrowLeft size={24} />
           </Link>
           <h2 className="text-2xl font-bold text-gray-800">

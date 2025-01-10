@@ -63,7 +63,6 @@ const PredictPage = () => {
 
     try {
       const response = await createPrediction(formData);
-      // Navigate to the prediction detail page
       navigate(`/dashboard/predictions/${response.id}`);
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al crear la predicción');
@@ -123,65 +122,73 @@ const PredictPage = () => {
               </select>
             </div>
           </div>
+
+          {
+              formData.mode === 'automatic' && (
+          
+            <div className="flex flex-col md:flex-row gap-6">
+              
+              
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Departamento
+                </label>
+                <select
+                  name="department"
+                  value={formData.department}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  required
+                >
+                  <option value="">Seleccionar departamento</option>
+                  {departments.map(dept => (
+                    <option key={dept} value={dept}>{dept}</option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Provincia
+                </label>
+                <select
+                  name="province"
+                  value={formData.province}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  required
+                  disabled={!formData.department}
+                >
+                  <option value="">Seleccionar provincia</option>
+                  {availableProvinces.map(prov => (
+                    <option key={prov} value={prov}>{prov}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Distrito
+                </label>
+                <select
+                  name="district"
+                  value={formData.district}
+                  onChange={handleChange}
+                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  required
+                  disabled={!formData.province}
+                >
+                  <option value="">Seleccionar distrito</option>
+                  {availableDistricts.map(dist => (
+                    <option key={dist} value={dist}>{dist}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+              )
+          }
           
           <div className="flex flex-col md:flex-row gap-6">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Departamento
-              </label>
-              <select
-                name="department"
-                value={formData.department}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
-              >
-                <option value="">Seleccionar departamento</option>
-                {departments.map(dept => (
-                  <option key={dept} value={dept}>{dept}</option>
-                ))}
-              </select>
-            </div>
             
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Provincia
-              </label>
-              <select
-                name="province"
-                value={formData.province}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
-                disabled={!formData.department}
-              >
-                <option value="">Seleccionar provincia</option>
-                {availableProvinces.map(prov => (
-                  <option key={prov} value={prov}>{prov}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="flex-1">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Distrito
-              </label>
-              <select
-                name="district"
-                value={formData.district}
-                onChange={handleChange}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                required
-                disabled={!formData.province}
-              >
-                <option value="">Seleccionar distrito</option>
-                {availableDistricts.map(dist => (
-                  <option key={dist} value={dist}>{dist}</option>
-                ))}
-              </select>
-            </div>
             
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -297,22 +304,6 @@ const PredictPage = () => {
               </select>
             </div>
 
-                
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Clasificación Climática
-                  </label>
-                  <input
-                    type="number"
-                    name="clasi"
-                    value={formData.clasi || ''}
-                    onChange={handleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    placeholder="Ej: 2500"
-                    required
-                  />
-                </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
