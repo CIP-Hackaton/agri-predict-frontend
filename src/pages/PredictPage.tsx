@@ -13,11 +13,13 @@ interface FormData {
   date: string;
   mode: PredictionMode;
   // Manual prediction fields
-  temperature?: number;
+  temp_max?: number;
+  temp_min?: number;
   humidity?: number;
   rainfall?: number;
-  soilPh?: number;
-  altitude?: number;
+  nevada?: number;
+  clasi?: number;
+  erosion?: number;
 }
 
 const PredictPage = () => {
@@ -80,7 +82,7 @@ const PredictPage = () => {
       <div className="bg-white rounded-lg shadow-sm p-6">
         <h2 className="text-2xl font-bold mb-4">Nueva predicción</h2>
         <p className="text-gray-600 mb-6">
-          Por favor ingrese todos los datos correspondientes al lugar de su sembrio
+          Por favor ingrese todos los datos correspondientes al lugar de su sembrío
         </p>
         
         {error && (
@@ -203,12 +205,12 @@ const PredictPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Temperatura (°C)
+                    Temperatura Máxima (°C)
                   </label>
                   <input
                     type="number"
-                    name="temperature"
-                    value={formData.temperature || ''}
+                    name="temp_max"
+                    value={formData.temp_max || ''}
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     placeholder="Ej: 20"
@@ -218,7 +220,22 @@ const PredictPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Humedad (%)
+                    Temperatura Mínima (°C)
+                  </label>
+                  <input
+                    type="number"
+                    name="temp_min"
+                    value={formData.temp_min || ''}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="Ej: 10"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Presencia de Tizón (%)
                   </label>
                   <input
                     type="number"
@@ -248,12 +265,12 @@ const PredictPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    pH del suelo
+                    Nevada (cm)
                   </label>
                   <input
                     type="number"
-                    name="soilPh"
-                    value={formData.soilPh || ''}
+                    name="nevada"
+                    value={formData.nevada || ''}
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     placeholder="Ej: 6.5"
@@ -264,12 +281,27 @@ const PredictPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Altitud (msnm)
+                    Clasificación Climática
                   </label>
                   <input
                     type="number"
-                    name="altitude"
-                    value={formData.altitude || ''}
+                    name="clasi"
+                    value={formData.clasi || ''}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="Ej: 2500"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Erosión promedio (mm)
+                  </label>
+                  <input
+                    type="number"
+                    name="erosion"
+                    value={formData.erosion || ''}
                     onChange={handleChange}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     placeholder="Ej: 2500"
