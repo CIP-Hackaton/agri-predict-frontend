@@ -1,33 +1,5 @@
 import { X } from 'lucide-react';
-
-interface PotatoVariety {
-  id: number;
-  name: string;
-  description: string;
-  characteristics: string[];
-  imageUrl: string;
-  scientificName: string;
-  origin: string;
-  cultivationTime: string;
-  idealConditions: {
-    temperature: string;
-    soil: string;
-    altitude: string;
-    rainfall: string;
-  };
-  nutritionalInfo: {
-    calories: string;
-    protein: string;
-    carbs: string;
-    fiber: string;
-  };
-  commonUses: string[];
-  diseases: {
-    name: string;
-    description: string;
-    prevention: string;
-  }[];
-}
+import { PotatoVariety } from '../types/potato';
 
 interface PotatoDetailModalProps {
   variety: PotatoVariety | null;
@@ -54,81 +26,26 @@ export default function PotatoDetailModal({ variety, onClose }: PotatoDetailModa
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <img
-                src={variety.imageUrl}
+                src={variety.url_photo}
                 alt={variety.name}
                 className="w-full h-64 object-cover rounded-lg"
               />
+              <h3 className="text-lg font-semibold mt-4 mb-2">Descripción</h3>
+              <p className="text-gray-800">{variety.description}</p>
             </div>
 
             <div className="space-y-6">
-              <div>
+                <div>
                 <h3 className="text-lg font-semibold mb-2">Características</h3>
                 <dl className="grid grid-cols-2 gap-4">
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Temperatura</dt>
-                    <dd className="text-gray-900">{variety.idealConditions.temperature}</dd>
+                  {Object.entries(variety.characteristics).map(([key, value]) => (
+                  <div key={key}>
+                    <dt className="text-sm font-medium text-gray-500">{key}</dt>
+                    <dd className="text-gray-900">{value as string}</dd>
                   </div>
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Tipo de suelo</dt>
-                    <dd className="text-gray-900">{variety.idealConditions.soil}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Altitud</dt>
-                    <dd className="text-gray-900">{variety.idealConditions.altitude}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Precipitación</dt>
-                    <dd className="text-gray-900">{variety.idealConditions.rainfall}</dd>
-                  </div>
-                </dl>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Información nutricional</h3>
-                <dl className="grid grid-cols-2 gap-4">
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Calorías</dt>
-                    <dd className="text-gray-900">{variety.nutritionalInfo.calories}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Proteínas</dt>
-                    <dd className="text-gray-900">{variety.nutritionalInfo.protein}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Carbohidratos</dt>
-                    <dd className="text-gray-900">{variety.nutritionalInfo.carbs}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500">Fibra</dt>
-                    <dd className="text-gray-900">{variety.nutritionalInfo.fiber}</dd>
-                  </div>
-                </dl>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Usos comunes</h3>
-                <ul className="list-disc list-inside space-y-1">
-                  {variety.commonUses.map((use, index) => (
-                    <li key={index} className="text-gray-700">{use}</li>
                   ))}
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-2">Enfermedades comunes</h3>
-                <div className="space-y-4">
-                  {variety.diseases.map((disease, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                      <h4 className="font-medium text-gray-900 mb-2">{disease.name}</h4>
-                      <p className="text-sm text-gray-600 mb-2">{disease.description}</p>
-                      <p className="text-sm">
-                        <span className="font-medium">Prevención:</span>{' '}
-                        {disease.prevention}
-                      </p>
-                    </div>
-                  ))}
+                </dl>
                 </div>
-              </div>
             </div>
           </div>
         </div>
