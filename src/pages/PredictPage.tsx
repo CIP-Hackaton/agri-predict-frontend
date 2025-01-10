@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { departments, provinces, districts } from '../data/locations';
+import { departments, provinces, districts, clasificaciones } from '../data/locations';
 import { createPrediction } from '../api/predictions';
 
 type PredictionMode = 'automatic' | 'manual';
@@ -278,6 +278,26 @@ const PredictPage = () => {
                     required
                   />
                 </div>
+
+                <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Clasificación Climática
+              </label>
+              <select
+                name="clasi"
+                value={formData.clasi}
+                onChange={handleChange}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                required
+              >
+                <option value="">Seleccionar clasificación climática</option>
+                {clasificaciones.map(clasification => (
+                  <option key={clasification} value={clasification}>{clasification}</option>
+                ))}
+              </select>
+            </div>
+
+                
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -14,27 +14,29 @@ export default function PredictionDetailPage() {
   const prediction = {
     id: 1,
     name: 'Papa Amarilla',
-    imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=500',
-    stages: [
+    campesino_response: [
       {
-        name: 'Papa 1',
-        description: 'Descripción de papa, lorem ipsum',
-        date: '2024-03-15',
-        recommendations: [
-          'Característica 1: Texto sobre cada punto tal',
-          'Característica 2: Texto sobre cada punto tal',
-        ],
+        id: 1,
+        name: 'Papa Amarilla',
+        description: 'Papa amarilla de la región de Cusco',
+        characteristics: { 
+          "Tizón tardío":"Resistente","Materia Seca":0.22,"Periodo de crecimiento en altura":"Media","Color predominante de la pulpa":"Crema","Forma de los ojos":"Poco profundos"
+        },
+        url_photo: 'https://images.unsplash.com/photo'
       },
-      // Add more stages...
+      {
+        id: 2,
+        name: 'Papa Huayro',
+        description: 'Papa amarilla de la región de Cusco',
+        characteristics: { 
+          "Tizón tardío":"Resistente","Materia Seca":0.22,"Periodo de crecimiento en altura":"Media","Color predominante de la pulpa":"Crema","Forma de los ojos":"Poco profundos"
+        },
+        url_photo: 'https://images.unsplash.com/photo'
+      }
     ],
-    scientificData: {
-      characteristics: ['Característica 1', 'Característica 2', 'Característica 3'],
-      graphData: {/* Add graph data here */},
-      comparison: [
-        { characteristic: 'Característica 1', ideal: '90%', real: '85%', difference: '-5%' },
-        // Add more comparison data...
-      ],
-    },
+    p_characteristics:{
+      "Tizón tardío":"Resistente","Materia Seca":0.22,"Periodo de crecimiento en altura":"Media","Color predominante de la pulpa":"Crema","Forma de los ojos":"Poco profundos"
+    }
   };
 
   const varieties = [
@@ -95,30 +97,22 @@ export default function PredictionDetailPage() {
 
         {viewMode === 'farmer' ? (
           <div className="space-y-8">
-            <div className="aspect-w-16 aspect-h-9 mb-6">
-              <img
-                src={prediction.imageUrl}
-                alt={prediction.name}
-                className="rounded-lg object-cover w-full h-64"
-              />
-            </div>
-            <p className="text-gray-600">
-              Los pasos que mejor se ajusta a usted es:
-            </p>
-            {prediction.stages.map((stage, index) => (
-              <div key={index} className="space-y-4">
-                <h3 className="text-xl font-semibold">
-                  {index + 1}. {stage.name}
-                </h3>
-                <p className="text-gray-600">{stage.description}</p>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <p className="font-medium mb-2">Fecha de la papa</p>
-                  <p className="text-gray-600">{stage.date}</p>
+            {prediction.campesino_response.map((response) => (
+              <div key={response.id} className="space-y-4">
+                <div className="aspect-w-16 aspect-h-9 mb-6">
+                  <img
+                    src={response.url_photo}
+                    alt={response.name}
+                    className="rounded-lg object-cover w-full h-64"
+                  />
                 </div>
+                <h3 className="text-xl font-semibold">{response.name}</h3>
+                <p className="text-gray-600">{response.description}</p>
                 <div className="space-y-2">
-                  <p className="text-gray-600">El sistema priorizó las siguientes características:</p>
-                  {stage.recommendations.map((rec, idx) => (
-                    <p key={idx} className="text-gray-600 ml-4">• {rec}</p>
+                  {Object.entries(response.characteristics).map(([key, value]) => (
+                    <p key={key} className="text-gray-600">
+                      <strong>{key}:</strong> {value}
+                    </p>
                   ))}
                 </div>
               </div>
@@ -126,29 +120,23 @@ export default function PredictionDetailPage() {
           </div>
         ) : (
           <div className="space-y-8">
-            <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Comparar con:
-              </label>
-              <select
-                value={selectedVariety}
-                onChange={(e) => setSelectedVariety(e.target.value)}
-                className="w-full md:w-64 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 rounded-md"
-              >
-                <option value="">Seleccionar variedad</option>
-                {varieties.map((variety) => (
-                  <option key={variety.id} value={variety.id}>
-                    {variety.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+
+
+            <h3 className="text-3xl font-semibold">Vista de Investigador</h3>
+
+            <p className="text-gray-600"> Con estas características garantizamos un máximo rendimiento</p>
+
+            <h3 className="font-semibold text-xl">Características de la papa ideal</h3>            
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {prediction.scientificData.characteristics.map((char, index) => (
-                <div key={index} className="p-4 bg-gray-50 rounded-lg">
-                  <p className="font-medium">{char}</p>
-                </div>
+              {Object.entries(prediction.p_characteristics).map(([key, value]) => (
+              <div key={key} className="relative p-4 bg-green-100 rounded-lg">
+                <p className="font-medium text-xl">{key}</p>
+                <p className="text-sm text-gray-700">{value}</p>
+                <span className="absolute top-2 right-2 text-green-500">
+                <i className="fas fa-info-circle"></i>
+                </span>
+              </div>
               ))}
             </div>
             
@@ -159,8 +147,26 @@ export default function PredictionDetailPage() {
               </div>
             </div>
 
-            <div>
+            <div className="p-4">
               <h4 className="font-medium mb-4">Comparar</h4>
+              <div className="w-full">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+              Comparar con:
+              </label>
+              <select
+              value={selectedVariety}
+              onChange={(e) => setSelectedVariety(e.target.value)}
+              className="w-full md:w-64 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 rounded-md"
+              >
+              <option value="">Seleccionar variedad</option>
+              {varieties.map((variety) => (
+                <option key={variety.id} value={variety.id}>
+                {variety.name}
+                </option>
+              ))}
+              </select>
+            </div>
+
               <div className="overflow-x-auto">
                 <div className="inline-block min-w-full align-middle">
                   <table className="min-w-full divide-y divide-gray-200">
@@ -181,22 +187,7 @@ export default function PredictionDetailPage() {
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                      {prediction.scientificData.comparison.map((item, index) => (
-                        <tr key={index}>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                            {item.characteristic}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {item.ideal}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {item.real}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {item.difference}
-                          </td>
-                        </tr>
-                      ))}
+                      {/* Add comparison data here */}
                     </tbody>
                   </table>
                 </div>

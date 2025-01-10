@@ -1,5 +1,5 @@
 import React from 'react';
-import { ChevronLeft, Sprout } from 'lucide-react';
+import { Sprout } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface NavigationItem {
