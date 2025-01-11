@@ -125,6 +125,8 @@ export default function PredictionDetailPage() {
         </div>
 
         {viewMode === 'farmer' ? (
+          <>
+          <p className="text-gray-600"></p>
           <div className="space-y-8">
             {prediction?.campesino_response && prediction.campesino_response.map((response, index) => (
               <div key={index} className="space-y-4">
@@ -148,10 +150,13 @@ export default function PredictionDetailPage() {
               </div>
             ))}
           </div>
+          </>
         ) : (
           <div className="space-y-8">
             <h3 className="text-3xl font-semibold">Vista de Investigador</h3>
-            <p className="text-gray-600">Con estas características garantizamos un máximo rendimiento</p>
+            <p className="text-gray-600">Con estas características aseguramos un buen rendimiento en el campo y una excelente aceptación en el mercado
+              
+            </p>
             <h3 className="font-semibold text-xl">Características de la papa ideal</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {prediction?.p_characteristics && Object.entries(prediction.p_characteristics).map(([key, value]) => (
