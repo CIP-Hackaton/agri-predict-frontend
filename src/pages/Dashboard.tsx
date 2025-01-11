@@ -131,7 +131,7 @@ export default function Dashboard() {
               path="/dashboard" 
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated} isLoading={isLoading}>
-                  <HomePage onStartTour={() => setShowTourGuide(true)} />
+                  <HomePage onStartTour={() => setShowTourGuide(true)} userName={userData?.name || ""} />
                 </ProtectedRoute>
               } 
             />

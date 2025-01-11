@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 interface HomePageProps {
   onStartTour: () => void;
+  userName: string;
 }
 
-const HomePage = ({ onStartTour }: HomePageProps) => {
+const HomePage = ({ onStartTour, userName }: HomePageProps) => {
   const navigate = useNavigate();
 
   return (
@@ -13,7 +14,7 @@ const HomePage = ({ onStartTour }: HomePageProps) => {
       <div className="bg-white rounded-lg p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-2xl font-bold mb-2">Bienvenido Sergio</h1>
+            <h1 className="text-2xl font-bold mb-2">Bienvenido {userName}</h1>
             <p className="text-gray-600">
               Somos AgriPredict, tu asistente inteligente para optimizar tus cultivos
             </p>

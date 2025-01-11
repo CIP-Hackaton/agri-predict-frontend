@@ -22,7 +22,11 @@ export const createPrediction = async (predictionData: any) => {
 
 export const getPredictions = async () => {
   try {
-    const response = await axios.get(`${API_URL}/predictions`);
+    const response = await axios.get(`${API_URL}/predictions`, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`,
+      },
+    });
     return response.data;
   } catch (error) {
     throw error;
@@ -31,7 +35,11 @@ export const getPredictions = async () => {
 
 export const getPredictionById = async (id: string) => {
   try {
-    const response = await axios.get(`${API_URL}/predictions/${id}`);
+    const response = await axios.get(`${API_URL}/predictions/${id}`,{
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`,
+      },
+    });
     return response.data;
   } catch (error) {
     throw error;

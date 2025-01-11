@@ -1,49 +1,68 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Share2 } from 'lucide-react';
 import ShareModal from '../components/ShareModal';
+import { getPredictionById } from '../api/predictions';
 
 type ViewMode = 'farmer' | 'scientist';
+
+type Prediction = {
+  id: string;
+  details: {
+    name: string;
+    Fecha: string;
+    Departamento: string;
+    Provincia: string;
+    Distrito: string;
+    mode: string;
+  };
+  campesino_response: {
+    Variety: string;
+    Norma_Diferencia: number;
+    characteristics: {
+      "Tizón tardío": string;
+      "Materia Seca": number;
+      "Periodo de crecimiento en altura": string;
+      "Color predominante de la pulpa": string;
+      "Forma de los ojos": string;
+    };
+    url_photo: string;
+    description: string;
+    name: string;
+    norm: number;
+  }[];
+  p_characteristics: {
+    "Tizón tardío": string;
+    "Materia Seca": number;
+    "Periodo de crecimiento en altura": string;
+    "Color predominante de la pulpa": string;
+    "Forma de los ojos": string;
+  };
+  owner: string;
+  created_at: string;
+  allowed_user: string[];
+  updated_at: string;
+};
 
 export default function PredictionDetailPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('farmer');
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [selectedVariety, setSelectedVariety] = useState('');
+  const [prediction, setPrediction] = useState<Prediction | null>(null);
 
-  // Mock data - replace with real data later
-  const prediction = {
-    id: 1,
-    name: 'Papa Amarilla',
-    campesino_response: [
-      {
-        id: 1,
-        name: 'Papa Amarilla',
-        description: 'Papa amarilla de la región de Cusco',
-        characteristics: { 
-          "Tizón tardío":"Resistente","Materia Seca":0.22,"Periodo de crecimiento en altura":"Media","Color predominante de la pulpa":"Crema","Forma de los ojos":"Poco profundos"
-        },
-        url_photo: 'https://images.unsplash.com/photo'
-      },
-      {
-        id: 2,
-        name: 'Papa Huayro',
-        description: 'Papa amarilla de la región de Cusco',
-        characteristics: { 
-          "Tizón tardío":"Resistente","Materia Seca":0.22,"Periodo de crecimiento en altura":"Media","Color predominante de la pulpa":"Crema","Forma de los ojos":"Poco profundos"
-        },
-        url_photo: 'https://images.unsplash.com/photo'
+  useEffect(() => {
+    const fetchPrediction = async () => {
+      try {
+        const id = window.location.pathname.split('/').pop() || '';
+        const prediction = await getPredictionById(id);
+        setPrediction(prediction);
+        console.log(prediction);
+      } catch (error) {
+        console.error(error);
       }
-    ],
-    p_characteristics:{
-      "Tizón tardío":"Resistente","Materia Seca":0.22,"Periodo de crecimiento en altura":"Media","Color predominante de la pulpa":"Crema","Forma de los ojos":"Poco profundos"
-    }
-  };
+    };
 
-  const varieties = [
-    { id: '1', name: 'Papa Huayro' },
-    { id: '2', name: 'Papa Peruanita' },
-    { id: '3', name: 'Papa Canchan' },
-  ];
+    fetchPrediction();
+  }, []);
 
   const handleShare = (emails: string[]) => {
     console.log('Sharing with:', emails);
@@ -58,10 +77,9 @@ export default function PredictionDetailPage() {
             <ArrowLeft size={24} />
           </Link>
           <h2 className="text-2xl font-bold text-gray-800">
-            Predicción '{prediction.name}'
+            Predicción '{prediction?.details.name}'
           </h2>
         </div>
-        
         <button
           onClick={() => setIsShareModalOpen(true)}
           className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
@@ -72,6 +90,17 @@ export default function PredictionDetailPage() {
       </div>
 
       <div className="bg-white rounded-lg p-4 shadow-sm">
+        {prediction?.details.mode === 'automatic' && (
+          <div className="bg-green-50 p-4 rounded-lg mb-4">
+            <p className="text-gray-600">La siguiente predicción se llevó a cabo con los siguientes datos.</p>
+            <div className="text-gray-600">
+              <p className="inline-block bg-white-50 text-green-700 px-2 py-1 rounded-full text-sm mr-2">Departamento: {prediction.details.Departamento}</p>
+              <p className="inline-block bg-green-50 text-green-700 px-2 py-1 rounded-full text-sm mr-2">Provincia: {prediction.details.Provincia}</p>
+              <p className="inline-block bg-green-50 text-green-700 px-2 py-1 rounded-full text-sm mr-2">Distrito: {prediction.details.Distrito}</p>
+              <p className="inline-block bg-green-50 text-green-700 px-2 py-1 rounded-full text-sm mr-2">Fecha: {prediction.details.Fecha}</p>
+            </div>
+          </div>
+        )}
         <div className="flex flex-wrap gap-2 mb-6">
           <button
             onClick={() => setViewMode('farmer')}
@@ -81,7 +110,7 @@ export default function PredictionDetailPage() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            Soy campesino
+            Soy agricultor
           </button>
           <button
             onClick={() => setViewMode('scientist')}
@@ -97,101 +126,47 @@ export default function PredictionDetailPage() {
 
         {viewMode === 'farmer' ? (
           <div className="space-y-8">
-            {prediction.campesino_response.map((response) => (
-              <div key={response.id} className="space-y-4">
-                <div className="aspect-w-16 aspect-h-9 mb-6">
-                  <img
-                    src={response.url_photo}
-                    alt={response.name}
-                    className="rounded-lg object-cover w-full h-64"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold">{response.name}</h3>
-                <p className="text-gray-600">{response.description}</p>
-                <div className="space-y-2">
-                  {Object.entries(response.characteristics).map(([key, value]) => (
-                    <p key={key} className="text-gray-600">
-                      <strong>{key}:</strong> {value}
-                    </p>
-                  ))}
-                </div>
+            {prediction?.campesino_response && prediction.campesino_response.map((response, index) => (
+              <div key={index} className="space-y-4">
+          <h3 className="text-xl font-semibold">Puesto {index + 1}</h3>
+          <div className="space-y-2 flex-shrink-0 justify-center items-center">
+            <p className="text-gray-600"><strong>Variedad:</strong> {response.Variety}</p>
+            <p className="text-gray-600"><strong>Descripción:</strong> {response.description}</p>
+            <div className="flex flex-col sm:flex-row items-center gap-4">
+              <div className="flex-1 space-y-2">
+                {response.characteristics && Object.entries(response.characteristics || {}).map(([key, value]) => (
+            <p key={key} className="text-gray-600">
+              <strong>{key}:</strong> {value}
+            </p>
+                ))}
+              </div>
+            </div>
+            <div className="">
+                <img src={response.url_photo} alt={`Foto de ${response.name}`} className="w-64 h-64 object-cover rounded-lg" />
+              </div>
+          </div>
               </div>
             ))}
           </div>
         ) : (
           <div className="space-y-8">
-
-
             <h3 className="text-3xl font-semibold">Vista de Investigador</h3>
-
-            <p className="text-gray-600"> Con estas características garantizamos un máximo rendimiento</p>
-
-            <h3 className="font-semibold text-xl">Características de la papa ideal</h3>            
-
+            <p className="text-gray-600">Con estas características garantizamos un máximo rendimiento</p>
+            <h3 className="font-semibold text-xl">Características de la papa ideal</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {Object.entries(prediction.p_characteristics).map(([key, value]) => (
-              <div key={key} className="relative p-4 bg-green-100 rounded-lg">
-                <p className="font-medium text-xl">{key}</p>
-                <p className="text-sm text-gray-700">{value}</p>
-                <span className="absolute top-2 right-2 text-green-500">
-                <i className="fas fa-info-circle"></i>
-                </span>
-              </div>
+              {prediction?.p_characteristics && Object.entries(prediction.p_characteristics).map(([key, value]) => (
+                <div key={key} className="relative p-4 bg-green-100 rounded-lg">
+                  <p className="font-medium text-xl">{key}</p>
+                  <p className="text-sm text-gray-700">{value}</p>
+                  <span className="absolute top-2 right-2 text-green-500">
+                    <i className="fas fa-info-circle"></i>
+                  </span>
+                </div>
               ))}
             </div>
-            
             <div className="bg-gray-50 p-4 rounded-lg">
               <h4 className="font-medium mb-4">Gráfica visual</h4>
-              <div className="h-64 bg-white rounded border border-gray-200">
-                {/* Add graph visualization here */}
-              </div>
-            </div>
-
-            <div className="p-4">
-              <h4 className="font-medium mb-4">Comparar</h4>
-              <div className="w-full">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-              Comparar con:
-              </label>
-              <select
-              value={selectedVariety}
-              onChange={(e) => setSelectedVariety(e.target.value)}
-              className="w-full md:w-64 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 rounded-md"
-              >
-              <option value="">Seleccionar variedad</option>
-              {varieties.map((variety) => (
-                <option key={variety.id} value={variety.id}>
-                {variety.name}
-                </option>
-              ))}
-              </select>
-            </div>
-
-              <div className="overflow-x-auto">
-                <div className="inline-block min-w-full align-middle">
-                  <table className="min-w-full divide-y divide-gray-200">
-                    <thead>
-                      <tr className="bg-gray-50">
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Característica
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Papa ideal
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Papa referencial
-                        </th>
-                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Diferencia
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                      {/* Add comparison data here */}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <div className="h-64 bg-white rounded border border-gray-200"></div>
             </div>
           </div>
         )}
