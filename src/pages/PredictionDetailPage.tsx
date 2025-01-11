@@ -126,7 +126,7 @@ export default function PredictionDetailPage() {
 
         {viewMode === 'farmer' ? (
           <>
-          <p className="text-gray-600"></p>
+          <p className="text-gray-600">Si siembras estas variedades, tendrás una campaña exitosa en el lugar donde te encuentras</p>
           <div className="space-y-8">
             {prediction?.campesino_response && prediction.campesino_response.map((response, index) => (
               <div key={index} className="space-y-4">
