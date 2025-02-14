@@ -45,7 +45,7 @@ export default function LandingPage() {
             <Sprout className="h-8 w-8 text-green-500" />
             <span className="text-xl font-bold">AgriPredict</span>
           </div>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-4">
             <a href="#about" className="text-gray-600 hover:text-gray-900">Quiénes Somos</a>
@@ -133,7 +133,7 @@ export default function LandingPage() {
             <h2 className="text-3xl font-bold text-center mb-8">¿Cómo funciona?</h2>
             <div className="aspect-w-16 aspect-h-9 rounded-xl overflow-hidden shadow-lg">
               <iframe
-                src="https://www.youtube.com/embed/your-video-id"
+                src="https://www.youtube.com/embed/wIAVxfn-vSU"
                 title="Tutorial AgriPredict"
                 className="w-full h-[500px]"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
